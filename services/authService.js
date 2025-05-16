@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const ErrorResponse = require('../utils/ErrorResponse');
 
 const generateToken = (user) => {
   return jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -11,7 +12,7 @@ const generateToken = (user) => {
 module.exports = {
   registerUser: async (userData) => {
     const existingUser = await User.findOne({ email: userData.email });
-    if (existingUser) throw new Error('User already exists');
+    if (existingUser) throw new ErrorResponse('User already exists', 400);
 
     const user = await User.create(userData);
     return {
@@ -27,7 +28,7 @@ module.exports = {
   loginUser: async (email, password) => {
     const user = await User.findOne({ email }).select('+password');
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw new Error('Invalid credentials');
+      throw new ErrorResponse('Invalid credentials', 401);
     }
 
     return {
