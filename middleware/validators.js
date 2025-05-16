@@ -1,5 +1,5 @@
 const { check, validationResult } = require('express-validator');
-const { ErrorResponse } = require('../utils/ErrorResponse');
+const ErrorResponse = require('../utils/ErrorResponse');
 const mongoose = require('mongoose');
 
 const validateRequest = (req, next) => {
@@ -29,12 +29,8 @@ module.exports = {
       .isEmail().withMessage('Invalid email address')
       .normalizeEmail(),
     check('password')
-      .isStrongPassword({
-        minLength: 8,
-        minLowercase: 1,
-        minUppercase: 1,
-        minNumbers: 1
-      }).withMessage('Password must contain at least 8 characters with 1 uppercase, 1 lowercase, and 1 number'),
+      .isLength({ min: 8 })
+      .withMessage('Password must be at least 8 characters long'),
     (req, res, next) => validateRequest(req, next)
   ],
 
