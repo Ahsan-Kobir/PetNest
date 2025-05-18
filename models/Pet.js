@@ -17,11 +17,7 @@ const PetSchema = new mongoose.Schema({
     type: String, 
     enum: ['available', 'adopted'], 
     default: 'available' 
-  },
-  suggestedPets: [{ 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Pet' 
-  }]
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Pet', PetSchema);

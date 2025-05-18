@@ -28,13 +28,32 @@ module.exports = {
     const user = await User.findById(userId)
       .populate({
         path: 'favorites',
-        select: 'name age location thumbnailUrl status',
+        select: 'name age location thumbnailUrl status category',
         populate: {
           path: 'category',
           select: 'title'
         }
-      });
+      })
+      .lean(); // Get plain JS object
 
-    return user.favorites;
+    if (!user || !user.favorites) return [];
+
+    const favorites = user.favorites.map(pet => ({
+      id: pet._id.toString(),
+      name: pet.name,
+      age: pet.age,
+      location: pet.location,
+      thumbnailUrl: pet.thumbnailUrl,
+      status: pet.status,
+      category: pet.category
+        ? {
+          id: pet.category._id.toString(),
+          title: pet.category.title
+        }
+        : null
+    }));
+
+    return favorites;
   }
+
 };

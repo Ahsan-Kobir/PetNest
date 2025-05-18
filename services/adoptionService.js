@@ -19,22 +19,63 @@ module.exports = {
       createdAt: adoption.createdAt
     };
   },
-
   getAdoptions: async (userId) => {
-    return await Adoption.find({ user: userId })
+    const adoptions = await Adoption.find({ user: userId })
       .populate({
         path: 'pet',
         select: 'name thumbnailUrl'
       })
-      .sort('-createdAt');
+      .sort('-createdAt')
+      .lean();
+
+    return adoptions.map(adoption => ({
+      id: adoption._id.toString(),
+      pet: adoption.pet
+        ? {
+          id: adoption.pet._id.toString(),
+          name: adoption.pet.name,
+          thumbnailUrl: adoption.pet.thumbnailUrl
+        }
+        : null,
+      createdAt: adoption.createdAt,
+      status: adoption.status
+    }));
   },
 
   getAdoptionDetails: async (requestId) => {
     const adoption = await Adoption.findById(requestId)
       .populate('pet', 'name category age location')
-      .populate('user', 'name email');
+      .populate('user', 'name email')
+      .lean();
 
     if (!adoption) throw new Error('Adoption request not found');
-    return adoption;
+
+    return {
+      id: adoption._id.toString(),
+      pet: adoption.pet
+        ? {
+          id: adoption.pet._id.toString(),
+          name: adoption.pet.name,
+          age: adoption.pet.age,
+          location: adoption.pet.location,
+          category: adoption.pet.category?._id
+            ? {
+              id: adoption.pet.category._id.toString(),
+              title: adoption.pet.category.title
+            }
+            : null
+        }
+        : null,
+      user: adoption.user
+        ? {
+          id: adoption.user._id.toString(),
+          name: adoption.user.name,
+          email: adoption.user.email
+        }
+        : null,
+      status: adoption.status,
+      createdAt: adoption.createdAt
+    };
   }
+
 };
