@@ -16,6 +16,6 @@ exports.protect = async (req, res, next) => {
     req.user = await User.findById(decoded.id);
     next();
   } catch (err) {
-    res.status(401).json({ error: { code: 401, message: '2 Numberi koro? Invalid token' } });
+    res.status(401).json({ error: { code: 401, message: 'Vag shala, Unauthorized' } });
   }
 };

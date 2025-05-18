@@ -1,9 +1,11 @@
 const User = require('../models/User');
+const { toJSON } = require('../utils/helpers');
 
 module.exports = {
   getUserProfile: async (userId) => {
-    return await User.findById(userId)
+    const profile = await User.findById(userId)
       .select('-password -refreshToken -favorites');
+    return toJSON(profile);
   },
 
   updateUserProfile: async (userId, updateData) => {
@@ -14,6 +16,6 @@ module.exports = {
     ).select('-password -refreshToken');
 
     if (!user) throw new Error('User not found');
-    return user;
+    return toJSON(user);
   }
 };

@@ -1,3 +1,4 @@
+const { default: mongoose } = require('mongoose');
 const ErrorResponse = require('../utils/ErrorResponse');
 
 const errorHandler = (err, req, res, next) => {
@@ -20,6 +21,10 @@ const errorHandler = (err, req, res, next) => {
   if (err.name === 'ValidationError') {
     const message = Object.values(err.errors).map(val => val.message);
     error = new ErrorResponse(message, 400);
+  }
+
+  if (err instanceof mongoose.Error.CastError) {
+    error = new ErrorResponse('Invalid resource ID format', 400);
   }
 
   res.status(error.statusCode || 500).json({
