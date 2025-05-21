@@ -12,6 +12,8 @@ const AdoptionSchema = new mongoose.Schema({
     required: true 
   },
   message: String,
+  address: String,
+  contact: String,
   status: { 
     type: String, 
     enum: ['pending', 'approved', 'rejected'], 
