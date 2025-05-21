@@ -1,5 +1,7 @@
+const baseUrl = `${window.location.protocol}//${window.location.host}`;
 const IMGBB_API_KEY = '22cc77b369e955ea7ad5ebf29aec82c1'; // Replace with actual key
-const API_BASE = 'http://127.0.01:5000/api/pets';
+const API_BASE = baseUrl + '/api/pets';
+const CATEGORY_API = baseUrl + '/api/pets/categories';
 
 document.getElementById('images').addEventListener('change', function (e) {
     const preview = document.getElementById('imagePreview');
@@ -89,8 +91,6 @@ function showStatus(message, type) {
     status.className = `status ${type}`;
     status.style.display = 'block';
 }
-
-const CATEGORY_API = 'http://127.0.01:5000/api/pets/categories';
 
 async function loadCategories() {
     const select = document.getElementById('category');
