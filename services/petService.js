@@ -2,6 +2,7 @@ const Pet = require('../models/Pet');
 const Category = require('../models/Category');
 const { isValidObjectId, toJSON } = require('../utils/helpers');
 const ErrorResponse = require('../utils/ErrorResponse');
+const { default: mongoose } = require('mongoose');
 
 module.exports = {
   listPets: async (filters = {}, pagination = {}) => {
@@ -99,4 +100,15 @@ module.exports = {
     const result = await Category.find({});
     return result.map(toJSON);
   },
+
+// Temporary for rana vai
+  addPet: async (pet) => {
+    const petToSave = {
+      ...pet,
+      category: new mongoose.Types.ObjectId(pet.category) // convert string to ObjectId
+    };
+
+    const newPet = await Pet.create(petToSave);
+    return newPet;
+  }
 };
