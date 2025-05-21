@@ -5,7 +5,9 @@ exports.submitAdoption = async (req, res, next) => {
     const result = await adoptionService.submitAdoption(
       req.user.id,
       req.body.petId,
-      req.body.message
+      req.body.message,
+      req.body.address,
+      req.body.contact
     );
     res.status(201).json(result);
   } catch (error) {

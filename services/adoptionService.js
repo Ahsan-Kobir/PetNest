@@ -2,7 +2,7 @@ const Adoption = require('../models/Adoption');
 const Pet = require('../models/Pet');
 
 module.exports = {
-  submitAdoption: async (userId, petId, message) => {
+  submitAdoption: async (userId, petId, message, address, contact) => {
     const pet = await Pet.findById(petId);
     if (!pet) throw new Error('Pet not found');
     if (pet.status === 'adopted') throw new Error('Pet already adopted');
@@ -10,7 +10,9 @@ module.exports = {
     const adoption = await Adoption.create({
       pet: petId,
       user: userId,
-      message
+      message,
+      address,
+      contact
     });
 
     return {
@@ -37,8 +39,11 @@ module.exports = {
           thumbnailUrl: adoption.pet.thumbnailUrl
         }
         : null,
-      createdAt: adoption.createdAt,
-      status: adoption.status
+      message: adoption.message,
+      address: adoption.address,
+      contact: adoption.contact,
+      status: adoption.status,
+      createdAt: adoption.createdAt
     }));
   },
 
@@ -73,6 +78,9 @@ module.exports = {
           email: adoption.user.email
         }
         : null,
+      message: adoption.message,
+      address: adoption.address,
+      contact: adoption.contact,
       status: adoption.status,
       createdAt: adoption.createdAt
     };
