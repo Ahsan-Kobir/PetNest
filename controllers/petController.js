@@ -37,3 +37,15 @@ exports.getCategories = async (req, res, next) => {
     next(error);
   }
 };
+
+// Temporary for rana vai
+exports.addPet = async (req, res, next) => {
+  try {
+    const pet = await petService.addPet(
+      req.body
+    );
+    res.json(pet);
+  } catch (error) {
+    next(error);
+  }
+};

@@ -7,4 +7,8 @@ router.get('/', petController.getPets);
 router.get('/categories', petController.getCategories);
 router.get('/:petId', petController.getPetById);
 
+
+// Temporary for rana vai
+router.post('/', petController.addPet);
+
 module.exports = router;
