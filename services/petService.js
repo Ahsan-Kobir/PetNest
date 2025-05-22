@@ -12,7 +12,7 @@ module.exports = {
     const pets = await Pet.find(filters)
       .skip(skip)
       .limit(limit)
-      .select('name age location status thumbnailUrl category') // Only needed fields
+      .select('name age location status thumbnailUrl category price breed') // Only needed fields
       .populate('category', 'title')
       .lean();
 
@@ -24,6 +24,8 @@ module.exports = {
       location: pet.location,
       status: pet.status,
       thumbnailUrl: pet.thumbnailUrl,
+      price: pet.price,
+      breed: pet.breed,
       category: pet.category
         ? {
           id: pet.category._id.toString(),
@@ -63,6 +65,8 @@ module.exports = {
       description: pet.description,
       images: pet.images,
       status: pet.status,
+      price: pet.price,
+      breed: pet.breed,
       category: pet.category
         ? {
           id: pet.category._id.toString(),
@@ -74,7 +78,7 @@ module.exports = {
     const suggested = await Pet.find({ _id: { $ne: pet._id } })
       .limit(3)
       .populate('category', 'title')
-      .select('name age category location status thumbnailUrl')
+      .select('name age category location status thumbnailUrl breed price')
       .lean();
 
     formattedPet.suggestedPets = suggested.map((s) => ({
@@ -83,6 +87,8 @@ module.exports = {
       age: s.age,
       location: s.location,
       status: s.status,
+      price: s.price,
+      breed: s.breed,
       thumbnailUrl: s.thumbnailUrl,
       category: s.category
         ? {

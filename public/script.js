@@ -37,6 +37,8 @@ document.getElementById('petForm').addEventListener('submit', async (e) => {
             age: parseInt(document.getElementById('age').value),
             gender: document.querySelector('input[name="gender"]:checked')?.value,
             location: document.getElementById('location').value,
+            breed: document.getElementById('breed').value,
+            price: document.getElementById('price').value,
             description: document.getElementById('description').value,
             images: imageUrls,
             thumbnailUrl: imageUrls[0] || '',

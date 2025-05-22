@@ -28,7 +28,7 @@ module.exports = {
     const user = await User.findById(userId)
       .populate({
         path: 'favorites',
-        select: 'name age location thumbnailUrl status category',
+        select: 'name age location thumbnailUrl status category breed price',
         populate: {
           path: 'category',
           select: 'title'
@@ -43,6 +43,8 @@ module.exports = {
       name: pet.name,
       age: pet.age,
       location: pet.location,
+      price: pet.price,
+      breed: pet.breed,
       thumbnailUrl: pet.thumbnailUrl,
       status: pet.status,
       category: pet.category
