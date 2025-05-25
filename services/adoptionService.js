@@ -49,7 +49,7 @@ module.exports = {
 
   getAdoptionDetails: async (requestId) => {
     const adoption = await Adoption.findById(requestId)
-      .populate('pet', 'name category age location price breed')
+      .populate('pet', 'name category age location price breed thumbnailUrl')
       .populate('user', 'name email')
       .lean();
 
@@ -64,6 +64,7 @@ module.exports = {
           age: adoption.pet.age,
           price: adoption.pet.price,
           breed: adoption.pet.breed,
+          thumbnailUrl: adoption.pet.thumbnailUrl,
           location: adoption.pet.location,
           category: adoption.pet.category?._id
             ? {
