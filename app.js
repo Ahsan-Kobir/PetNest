@@ -25,6 +25,9 @@ app.use('/api/adoptions', require('./routes/adoptions'));
 
 app.use('/admin', express.static('public'))
 
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/welcome.html');
+});
 
 // Error Handling
 app.use(errorHandler);
